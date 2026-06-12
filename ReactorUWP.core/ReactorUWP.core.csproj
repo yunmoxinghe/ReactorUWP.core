@@ -12,6 +12,12 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <!-- 定义 UWP 条件编译符号 -->
     <DefineConstants>$(DefineConstants);UWP_BUILD</DefineConstants>
+    <!-- 禁止警告 -->
+    <!-- MSB3277: WindowsBase版本冲突 -->
+    <!-- CS0105: 重复的using指令 -->
+    <!-- CS0067: 未使用的事件（UwpStubs存根）-->
+    <!-- CA1416: 平台兼容性警告（项目支持10.0.17763+，但某些API需要10.0.18362+）-->
+    <NoWarn>$(NoWarn);MSB3277;CS0105;CS0067;CA1416</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

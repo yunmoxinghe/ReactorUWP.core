@@ -571,6 +571,10 @@ public static partial class ElementExtensions
     public static TextBlockElement TextWrapping(this TextBlockElement el, TextWrapping wrapping = Windows.UI.Xaml.TextWrapping.Wrap) =>
         el with { TextWrapping = wrapping };
 
+    /// <summary>How text wraps (Microsoft.UI.Xaml compatibility overload).</summary>
+    public static TextBlockElement TextWrapping(this TextBlockElement el, Microsoft.UI.Xaml.TextWrapping wrapping) =>
+        el with { TextWrapping = (Windows.UI.Xaml.TextWrapping)(int)wrapping };
+
     public static TextBlockElement TextAlignment(this TextBlockElement el, TextAlignment alignment) =>
         el with { TextAlignment = alignment };
 
@@ -831,6 +835,10 @@ public static partial class ElementExtensions
     /// <summary>How text wraps within the editor.</summary>
     public static RichEditBoxElement TextWrapping(this RichEditBoxElement el, TextWrapping wrapping = Windows.UI.Xaml.TextWrapping.Wrap) =>
         el with { TextWrapping = wrapping };
+
+    /// <summary>How text wraps within the editor (Microsoft.UI.Xaml compatibility overload).</summary>
+    public static RichEditBoxElement TextWrapping(this RichEditBoxElement el, Microsoft.UI.Xaml.TextWrapping wrapping) =>
+        el with { TextWrapping = (Windows.UI.Xaml.TextWrapping)(int)wrapping };
 
     /// <summary>Whether Enter inserts a newline (vs committing input).</summary>
     public static RichEditBoxElement AcceptsReturn(this RichEditBoxElement el, bool accepts = true) =>

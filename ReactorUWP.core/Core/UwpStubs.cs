@@ -139,6 +139,10 @@ namespace Microsoft.UI.Reactor.Hosting
     {
         public static bool WithinUpdatePass => false;
         public static bool IsHotReloadLive => false;
+        public static System.Collections.Generic.HashSet<System.Type>? UpdatedTypes => null;
+        
+        public static bool ConsumeUpdatePending() => false;
+        public static System.IDisposable? BeginUpdatePass() => null;
     }
     
     public class ReactorHotReloadCopier
@@ -155,6 +159,16 @@ namespace Microsoft.UI.Reactor.Hosting
         public static bool TryMigrate<T>(T oldInstance, T newInstance) => false;
         public static bool TryMigrate<T>(T oldInstance, T newInstance, HashSet<object> visited) where T : class => false;
         public static bool TryMigrate(object oldInstance, object newInstance, HashSet<object> visited) => false;
+    }
+    
+    public class ReactorApp
+    {
+        public static Microsoft.Extensions.Logging.ILogger? AppLogger => null;
+    }
+    
+    public class ReactorFeatureFlags
+    {
+        public static bool HighlightReconcileChanges => false;
     }
 }
 

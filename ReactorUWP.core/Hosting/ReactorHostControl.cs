@@ -142,7 +142,7 @@ public sealed partial class ReactorHostControl : ContentControl, IDisposable
         // already-constructed controls.
         _logger = logger ?? ReactorApp.AppLogger;
         _reconciler = new Reconciler(_logger);
-        _CoreDispatcher = CoreDispatcher.GetForCurrentThread();
+        _CoreDispatcher = Window.Current.Dispatcher;
         HorizontalContentAlignment = HorizontalAlignment.Stretch;
         VerticalContentAlignment = VerticalAlignment.Stretch;
         // ContentControl inherits IsTabStop=true from Control. Set it to false
@@ -480,14 +480,13 @@ public sealed partial class ReactorHostControl : ContentControl, IDisposable
             _currentTree = newTree;
 
             // Spec 033 §6 — Backdrop modifier on the root tree is a no-op for
-            // ReactorHostControl, which doesn't own its hosting Window. We
-            // still construct the applier (lazily, only on first encounter) so
-            // the no-op log fires exactly once per host instance.
-            if (newTree?.Modifiers?.Backdrop is { } backdropChoice)
-            {
-                _backdropApplier ??= new BackdropApplier(window: null);
-                _backdropApplier.Apply(backdropChoice);
-            }
+            // ReactorHostControl in UWP, which doesn't support SystemBackdrop.
+            // Comment out the backdrop code for UWP builds.
+            // if (newTree?.Modifiers?.Backdrop is { } backdropChoice)
+            // {
+            //     _backdropApplier ??= new BackdropApplier(window: null);
+            //     _backdropApplier.Apply(backdropChoice);
+            // }
 
             // Start any connected animations now that the new tree is in the visual tree
             _reconciler.FlushConnectedAnimations();
@@ -593,7 +592,8 @@ public sealed partial class ReactorHostControl : ContentControl, IDisposable
     private void ShowErrorFallback(Exception ex)
     {
         var errorPanel = Microsoft.UI.Reactor.Core.ErrorFallback.BuildPanel(ex);
-        if (_overlayWiring is not null && _overlayWiring.TryShowErrorInWrapper(errorPanel))
+        // Cast to UIElement for the overlay check, then to Panel if needed
+        if (_overlayWiring is not null && errorPanel is Panel panel && _overlayWiring.TryShowErrorInWrapper(panel))
         {
             // shared overlay wrapper took it
         }

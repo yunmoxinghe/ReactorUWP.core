@@ -37,8 +37,13 @@
   <ItemGroup>
     <!-- 排除 UWP 不支持或依赖缺失的功能 -->
     
-    <!-- 排除 Hosting（Window管理，WinUI 3 专属）-->
-    <Compile Remove="Hosting\**" />
+    <!-- 排除 Hosting 中依赖 Window 的文件，但保留 ReactorHostControl 和支持文件 -->
+    <Compile Remove="Hosting\ReactorHost.cs" />
+    <Compile Remove="Hosting\ReactorApp.cs" />
+    <Compile Remove="Hosting\ReactorApplication.cs" />
+    <Compile Remove="Hosting\ReactorWindow.cs" />
+    <Compile Remove="Hosting\WindowFactory.cs" />
+    <Compile Remove="Hosting\HotReloadService.cs" />
     
     <!-- 排除 Docking（依赖 Hosting）-->
     <Compile Remove="Docking\**" />

@@ -231,7 +231,7 @@ public sealed partial class Reconciler
     {
         if (state.LongPress is not { } cfg) return;
         if (!cfg.EnableMouseEmulation) return;
-        if (e.Pointer.PointerDeviceType != Windows.UI.Input.PointerDeviceType.Mouse) return;
+        if (e.Pointer.PointerDeviceType != global::Windows.Devices.Input.PointerDeviceType.Mouse) return;
 
         state.LongPressActivePointerId = e.Pointer.PointerId;
         state.LongPressPressedPosition = e.GetCurrentPoint(fe).Position;
@@ -266,7 +266,7 @@ public sealed partial class Reconciler
     {
         if (state.LongPress is not { } cfg) return;
         if (!cfg.EnableMouseEmulation) return;
-        if (e.Pointer.PointerDeviceType != Windows.UI.Input.PointerDeviceType.Mouse) return;
+        if (e.Pointer.PointerDeviceType != global::Windows.Devices.Input.PointerDeviceType.Mouse) return;
         if (e.Pointer.PointerId != state.LongPressActivePointerId && state.LongPressActivePointerId != 0) return;
 
         var wasArmed = state.LongPressMouseArmed;
@@ -301,7 +301,7 @@ public sealed partial class Reconciler
         if (state.LongPress is not { } cfg) return;
         if (!cfg.EnableMouseEmulation) return;
         if (!state.LongPressMouseArmed) return;
-        if (e.Pointer.PointerDeviceType != Windows.UI.Input.PointerDeviceType.Mouse) return;
+        if (e.Pointer.PointerDeviceType != global::Windows.Devices.Input.PointerDeviceType.Mouse) return;
         if (e.Pointer.PointerId != state.LongPressActivePointerId) return;
 
         var pos = e.GetCurrentPoint(fe).Position;

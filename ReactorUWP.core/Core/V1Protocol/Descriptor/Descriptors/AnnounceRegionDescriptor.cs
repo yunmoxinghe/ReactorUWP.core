@@ -34,7 +34,8 @@ internal static class AnnounceRegionDescriptor
                 tb.Height = 0;
                 tb.Opacity = 0;
                 tb.IsHitTestVisible = false;
-                tb.IsTabStop = false;
+                // TextBlock doesn't have IsTabStop in UWP (it's only on Control)
+                // But since it's hidden with Width=0, Height=0, Opacity=0, it won't receive focus anyway
                 AutomationProperties.SetLiveSetting(tb, AutomationLiveSetting.Polite);
                 AutomationProperties.SetAccessibilityView(tb, AccessibilityView.Raw);
                 ann.Handle.SetTextBlock(tb);

@@ -62,9 +62,11 @@ internal static class PipsPagerDescriptor
             slotIsNull:  static p => p.SelectedIndexChangedTrampoline is null,
             setSlot:     static (p, h) => p.SelectedIndexChangedTrampoline = h,
             valueDiffEcho: true)
+#if !UWP_BUILD
         .OneWay(
             get: static e => e.WrapMode,
             set: static (c, v) => c.WrapMode = v)
+#endif
         .OneWay(
             get: static e => e.MaxVisiblePips,
             set: static (c, v) => c.MaxVisiblePips = v)

@@ -1912,7 +1912,7 @@ public static partial class ElementExtensions
         el with { Setters = [.. el.Setters, configure] };
 
     // Navigation
-    public static NavigationViewElement Set(this NavigationViewElement el, Action<WinUI.NavigationView> configure) =>
+    public static NavigationViewElement Set(this NavigationViewElement el, Action<MUXC.NavigationView> configure) =>
         el with { Setters = [.. el.Setters, configure] };
 
     public static TabViewElement Set(this TabViewElement el, Action<MUXC.TabView> configure) =>

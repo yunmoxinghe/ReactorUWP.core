@@ -724,6 +724,7 @@ public sealed partial class Reconciler
     /// <c>Microsoft.UI.Xaml.Controls</c>; <c>StackLayout</c> here is the
     /// virtualizing layout (not the panel of the same name).
     /// </summary>
+#if !UWP_BUILD
     private static MUXC.Layout BuildItemsViewLayout(ItemsViewLayoutKind kind) => kind switch
     {
         ItemsViewLayoutKind.LinedFlowLayout => new MUXC.LinedFlowLayout
@@ -744,6 +745,7 @@ public sealed partial class Reconciler
         },
         _ => new MUXC.StackLayout { Spacing = 4 },
     };
+#endif
 
     // ── RelativePanel ───────────────────────────────────────────────────
 

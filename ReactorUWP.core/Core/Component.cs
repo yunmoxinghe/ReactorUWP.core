@@ -65,6 +65,7 @@ public abstract class Component
     protected Ref<T> UseRef<T>(T initialValue = default!)
         => Context.UseRef(initialValue);
 
+#if !UWP_BUILD
     protected (double Width, double Height) UseWindowSize(Windows.UI.Xaml.Window window)
         => Context.UseWindowSize(window);
 
@@ -158,6 +159,7 @@ public abstract class Component
     /// </summary>
     protected Microsoft.UI.Reactor.ReactorTrayIcon? UseTrayIcon(Microsoft.UI.Reactor.TrayIconSpec spec)
         => Context.UseTrayIcon(spec);
+#endif
 
     protected T UseObservableTree<T>(T source) where T : global::System.ComponentModel.INotifyPropertyChanged
         => Context.UseObservableTree(source);

@@ -3206,7 +3206,7 @@ public record NavigationViewElement(
     public double CompactModeThresholdWidth { get; init; } = double.NaN;
     /// <summary>Window width at which the pane auto-expands. <c>NaN</c> uses the WinUI default (1008).</summary>
     public double ExpandedModeThresholdWidth { get; init; } = double.NaN;
-    internal Action<WinUI.NavigationView>[] Setters { get; init; } = [];
+    internal Action<MUXC.NavigationView>[] Setters { get; init; } = [];
     internal override bool HasCallbacks => OnSelectedTagChanged is not null || OnBackRequested is not null;
 }
 

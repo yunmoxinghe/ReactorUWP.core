@@ -61,7 +61,7 @@ internal static class MediaPlayerElementDescriptor
 
     private static void DispatchToElement(FrameworkElement control, global::System.Action<MediaPlayerElementElement> body)
     {
-        var dispatcher = control.CoreDispatcher;
+        var dispatcher = control.Dispatcher;
         if (dispatcher is null) return;
         dispatcher.TryEnqueue(() =>
         {

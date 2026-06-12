@@ -130,15 +130,20 @@ public sealed partial class Reconciler
             case MUXC.ItemsRepeater ir:
                 BindItemsRepeaterErasedKeyedItems(ir, source, requestRerender, isMount);
                 return;
+#if !UWP_BUILD
             case WinUI.ItemsView iv:
                 BindItemsViewErasedKeyedItems(iv, source, requestRerender, isMount);
                 return;
+#endif
             default:
                 throw new InvalidOperationException(
                     $"TemplatedItemsErased<> binder does not yet support {control.GetType().FullName}. " +
                     "Supported on Mount/Update: WinUI.ListViewBase (ListView, GridView), " +
-                    "WinUI.ItemsRepeater (LazyVStack<T>, LazyHStack<T>, ItemsRepeater<T>), " +
-                    "and WinUI.ItemsView. FlipView stays carved.");
+                    "WinUI.ItemsRepeater (LazyVStack<T>, LazyHStack<T>, ItemsRepeater<T>)"
+#if !UWP_BUILD
+                    + ", and WinUI.ItemsView"
+#endif
+                    + ". FlipView stays carved.");
         }
     }
 
@@ -249,6 +254,7 @@ public sealed partial class Reconciler
             ApplyMoveAnimationsRepeater(ir, movedRows, ambient.Kind);
     }
 
+#if !UWP_BUILD
     private void BindItemsViewErasedKeyedItems(
         WinUI.ItemsView iv,
         IKeyedItemSource source,
@@ -321,6 +327,7 @@ public sealed partial class Reconciler
         if (ambient is { HasEffect: true } && stats.MovedRows is { Count: > 0 } movedRows)
             ApplyMoveAnimationsRepeater(repeater, movedRows, ambient.Kind);
     }
+#endif
 
     private void BindListViewBaseErasedKeyedItems(
         WinUI.ListViewBase lvb,

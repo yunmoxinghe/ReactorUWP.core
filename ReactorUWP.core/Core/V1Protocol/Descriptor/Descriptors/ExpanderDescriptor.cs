@@ -82,9 +82,11 @@ internal static class ExpanderDescriptor
             Children = ChildrenStrategy,
             GetSetters = static e => e.Setters,
         }
+#if !UWP_BUILD
         .OneWay(
             get: static e => e.ExpandDirection,
             set: static (c, v) => c.ExpandDirection = v)
+#endif
         // §14 Phase 3 finish — Engine (2) port. HeaderTemplate (Element)
         // takes precedence over the string slot. ImperativeBridged so the
         // Update path can call ReconcileV1Child to preserve descendant

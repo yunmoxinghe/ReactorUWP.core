@@ -937,7 +937,7 @@ public static partial class Factories
 
     public static NavigationViewElement NavigationView(NavigationViewItemData[] menuItems, Element? content = null)
     {
-        _ = V1.Reg<NavigationViewElement, WinUI.NavigationView, Desc.NavigationViewDescriptorHandler>.Done;
+        _ = V1.Reg<NavigationViewElement, MUXC.NavigationView, Desc.NavigationViewDescriptorHandler>.Done;
         return new(menuItems, content);
     }
 

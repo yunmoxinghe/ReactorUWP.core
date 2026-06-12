@@ -33,6 +33,7 @@ internal static class AnimatedIconDescriptor
         {
             GetSetters = static e => e.Setters,
         }
+#if !UWP_BUILD
         .OneWayConditional(
             get:         static e => e.Source,
             set:         static (c, v) =>
@@ -41,6 +42,7 @@ internal static class AnimatedIconDescriptor
                     c.Source = src;
             },
             shouldWrite: static e => e.Source is not null)
+#endif
         .OneWayConditional(
             get:         static e => e.FallbackIconSource,
             set:         static (c, v) =>

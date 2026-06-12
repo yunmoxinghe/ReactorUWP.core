@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using Windows.UI.Xaml;
 using Windows.Foundation;
 using WinUI = Windows.UI.Xaml.Controls;
+using MUXC = Microsoft.UI.Xaml.Controls;
 
 namespace Microsoft.UI.Reactor.Core.V1Protocol.Descriptor.Descriptors;
 
@@ -16,17 +17,17 @@ namespace Microsoft.UI.Reactor.Core.V1Protocol.Descriptor.Descriptors;
 /// </summary>
 internal static class NavigationViewDescriptor
 {
-    private static readonly NamedSlots<NavigationViewElement, WinUI.NavigationView> ChildrenStrategy =
-        new NamedSlots<NavigationViewElement, WinUI.NavigationView>(new[]
+    private static readonly NamedSlots<NavigationViewElement, MUXC.NavigationView> ChildrenStrategy =
+        new NamedSlots<NavigationViewElement, MUXC.NavigationView>(new[]
         {
-            new NamedSlot<NavigationViewElement, WinUI.NavigationView>(
+            new NamedSlot<NavigationViewElement, MUXC.NavigationView>(
                 Name: "Header",
                 GetChild: static e => e.Header,
                 SetChild: static (c, ui) => c.Header = ui)
             {
                 GetCurrentChild = static c => c.Header as UIElement,
             },
-            new NamedSlot<NavigationViewElement, WinUI.NavigationView>(
+            new NamedSlot<NavigationViewElement, MUXC.NavigationView>(
                 Name: "AutoSuggestBox",
                 GetChild: static e => e.AutoSuggestBox,
                 SetChild: static (c, ui) =>
@@ -37,21 +38,21 @@ internal static class NavigationViewDescriptor
             {
                 GetCurrentChild = static c => c.AutoSuggestBox,
             },
-            new NamedSlot<NavigationViewElement, WinUI.NavigationView>(
+            new NamedSlot<NavigationViewElement, MUXC.NavigationView>(
                 Name: "PaneFooter",
                 GetChild: static e => e.PaneFooter,
                 SetChild: static (c, ui) => c.PaneFooter = ui)
             {
                 GetCurrentChild = static c => c.PaneFooter as UIElement,
             },
-            new NamedSlot<NavigationViewElement, WinUI.NavigationView>(
+            new NamedSlot<NavigationViewElement, MUXC.NavigationView>(
                 Name: "PaneCustomContent",
                 GetChild: static e => e.PaneCustomContent,
                 SetChild: static (c, ui) => c.PaneCustomContent = ui)
             {
                 GetCurrentChild = static c => c.PaneCustomContent as UIElement,
             },
-            new NamedSlot<NavigationViewElement, WinUI.NavigationView>(
+            new NamedSlot<NavigationViewElement, MUXC.NavigationView>(
                 Name: "Content",
                 GetChild: static e => e.Content,
                 SetChild: static (c, ui) => c.Content = ui)
@@ -60,21 +61,21 @@ internal static class NavigationViewDescriptor
             },
         });
 
-    private static readonly TypedEventHandler<WinUI.NavigationView, WinUI.NavigationViewSelectionChangedEventArgs>
+    private static readonly TypedEventHandler<MUXC.NavigationView, MUXC.NavigationViewSelectionChangedEventArgs>
         SelectionChangedTrampoline = (s, args) =>
         {
             var tag = args.IsSettingsSelected
                 ? null
-                : (args.SelectedItem as WinUI.NavigationViewItem)?.Tag as string;
+                : (args.SelectedItem as MUXC.NavigationViewItem)?.Tag as string;
             (Reconciler.GetElementTag(s) as NavigationViewElement)?.OnSelectedTagChanged?.Invoke(tag);
         };
 
-    private static readonly TypedEventHandler<WinUI.NavigationView, WinUI.NavigationViewBackRequestedEventArgs>
+    private static readonly TypedEventHandler<MUXC.NavigationView, MUXC.NavigationViewBackRequestedEventArgs>
         BackRequestedTrampoline = (s, _) =>
             (Reconciler.GetElementTag(s) as NavigationViewElement)?.OnBackRequested?.Invoke();
 
-    public static readonly ControlDescriptor<NavigationViewElement, WinUI.NavigationView> Descriptor =
-        new ControlDescriptor<NavigationViewElement, WinUI.NavigationView>
+    public static readonly ControlDescriptor<NavigationViewElement, MUXC.NavigationView> Descriptor =
+        new ControlDescriptor<NavigationViewElement, MUXC.NavigationView>
         {
             Children = ChildrenStrategy,
             GetSetters = static e => e.Setters,
@@ -84,7 +85,7 @@ internal static class NavigationViewDescriptor
             set: static (c, v) => c.IsPaneOpen = v)
         .OneWay(
             get: static e => e.PaneDisplayMode,
-            set: static (c, v) => c.PaneDisplayMode = (WinUI.NavigationViewPaneDisplayMode)(int)v)
+            set: static (c, v) => c.PaneDisplayMode = (MUXC.NavigationViewPaneDisplayMode)(int)v)
         .OneWay(
             get: static e => e.IsBackEnabled,
             set: static (c, v) => c.IsBackEnabled = v)
@@ -111,21 +112,21 @@ internal static class NavigationViewDescriptor
             mount: static (c, e) => ApplyMenuAndSelection(c, oldElement: null, e),
             update: static (c, o, n) => ApplyMenuAndSelection(c, o, n))
         .HandCodedEvent<NavigationViewEventPayload,
-            TypedEventHandler<WinUI.NavigationView, WinUI.NavigationViewSelectionChangedEventArgs>>(
+            TypedEventHandler<MUXC.NavigationView, MUXC.NavigationViewSelectionChangedEventArgs>>(
             subscribe:        static (c, h) => c.SelectionChanged += h,
             callbackPresent:  static e => e.OnSelectedTagChanged,
             trampoline:       SelectionChangedTrampoline,
             slotIsNull:       static p => p.SelectionChangedTrampoline is null,
             setSlot:          static (p, h) => p.SelectionChangedTrampoline = h)
         .HandCodedEvent<NavigationViewEventPayload,
-            TypedEventHandler<WinUI.NavigationView, WinUI.NavigationViewBackRequestedEventArgs>>(
+            TypedEventHandler<MUXC.NavigationView, MUXC.NavigationViewBackRequestedEventArgs>>(
             subscribe:        static (c, h) => c.BackRequested += h,
             callbackPresent:  static e => e.OnBackRequested,
             trampoline:       BackRequestedTrampoline,
             slotIsNull:       static p => p.BackRequestedTrampoline is null,
             setSlot:          static (p, h) => p.BackRequestedTrampoline = h);
 
-    private static void ApplyMenuAndSelection(WinUI.NavigationView control, NavigationViewElement? oldElement, NavigationViewElement element)
+    private static void ApplyMenuAndSelection(MUXC.NavigationView control, NavigationViewElement? oldElement, NavigationViewElement element)
     {
         if (oldElement is null)
         {
@@ -134,7 +135,7 @@ internal static class NavigationViewDescriptor
             foreach (var item in element.MenuItems)
             {
                 control.MenuItems.Add(item.IsHeader
-                    ? new WinUI.NavigationViewItemHeader { Content = item.Content }
+                    ? new MUXC.NavigationViewItemHeader { Content = item.Content }
                     : CreateNavItem(item));
             }
         }
@@ -166,10 +167,10 @@ internal static class NavigationViewDescriptor
                 var data = newData[i];
                 if (data.IsHeader)
                 {
-                    if (live[i] is WinUI.NavigationViewItemHeader h && !Equals(h.Content, data.Content))
+                    if (live[i] is MUXC.NavigationViewItemHeader h && !Equals(h.Content, data.Content))
                         h.Content = data.Content;
                 }
-                else if (live[i] is WinUI.NavigationViewItem nvi)
+                else if (live[i] is MUXC.NavigationViewItem nvi)
                 {
                     var oldItem = oldData is not null && i < oldData.Length ? oldData[i] : null;
                     UpdateNavItemInPlace(nvi, oldItem, data);
@@ -178,8 +179,8 @@ internal static class NavigationViewDescriptor
             return;
         }
 
-        var reusable = new global::System.Collections.Generic.Dictionary<string, WinUI.NavigationViewItem>();
-        foreach (var nvi in live.OfType<WinUI.NavigationViewItem>().Where(x => x.Tag is string))
+        var reusable = new global::System.Collections.Generic.Dictionary<string, MUXC.NavigationViewItem>();
+        foreach (var nvi in live.OfType<MUXC.NavigationViewItem>().Where(x => x.Tag is string))
             reusable[(string)nvi.Tag] = nvi;
 
         var oldByTag = new global::System.Collections.Generic.Dictionary<string, NavigationViewItemData>();
@@ -192,7 +193,7 @@ internal static class NavigationViewDescriptor
         {
             if (data.IsHeader)
             {
-                live.Add(new WinUI.NavigationViewItemHeader { Content = data.Content });
+                live.Add(new MUXC.NavigationViewItemHeader { Content = data.Content });
                 continue;
             }
 
@@ -217,18 +218,18 @@ internal static class NavigationViewDescriptor
             var data = newData[i];
             if (data.IsHeader)
             {
-                if (live[i] is not WinUI.NavigationViewItemHeader) return false;
+                if (live[i] is not MUXC.NavigationViewItemHeader) return false;
             }
             else
             {
-                if (live[i] is not WinUI.NavigationViewItem nvi) return false;
+                if (live[i] is not MUXC.NavigationViewItem nvi) return false;
                 if ((nvi.Tag as string) != (data.Tag ?? data.Content)) return false;
             }
         }
         return true;
     }
 
-    private static void UpdateNavItemInPlace(WinUI.NavigationViewItem nvi, NavigationViewItemData? oldData, NavigationViewItemData data)
+    private static void UpdateNavItemInPlace(MUXC.NavigationViewItem nvi, NavigationViewItemData? oldData, NavigationViewItemData data)
     {
         if (!Equals(nvi.Content, data.Content)) nvi.Content = data.Content;
 
@@ -255,9 +256,9 @@ internal static class NavigationViewDescriptor
             nvi.MenuItems.Clear();
     }
 
-    private static WinUI.NavigationViewItem CreateNavItem(NavigationViewItemData data)
+    private static MUXC.NavigationViewItem CreateNavItem(NavigationViewItemData data)
     {
-        var item = new WinUI.NavigationViewItem { Content = data.Content, Tag = data.Tag ?? data.Content };
+        var item = new MUXC.NavigationViewItem { Content = data.Content, Tag = data.Tag ?? data.Content };
         var icon = data.IconElement is not null
             ? IconResolver.ResolveIconForDescriptor(data.IconElement)
             : data.Icon is not null
@@ -276,7 +277,7 @@ internal static class NavigationViewDescriptor
         if (selectedTag is null) return null;
         foreach (var item in items)
         {
-            if (item is WinUI.NavigationViewItem nvi)
+            if (item is MUXC.NavigationViewItem nvi)
             {
                 if ((nvi.Tag as string) == selectedTag) return nvi;
                 var child = FindItemByTag(nvi.MenuItems, selectedTag);
@@ -293,4 +294,4 @@ internal static class NavigationViewDescriptor
 /// the <c>Reg&lt;&gt;</c> registration touch without leaking
 /// <c>DescriptorHandler&lt;,&gt;</c> as a public surface.
 /// </summary>
-internal sealed class NavigationViewDescriptorHandler() : DescriptorHandler<NavigationViewElement, WinUI.NavigationView>(NavigationViewDescriptor.Descriptor);
+internal sealed class NavigationViewDescriptorHandler() : DescriptorHandler<NavigationViewElement, MUXC.NavigationView>(NavigationViewDescriptor.Descriptor);

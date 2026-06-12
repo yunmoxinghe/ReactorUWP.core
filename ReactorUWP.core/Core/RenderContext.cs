@@ -1011,8 +1011,10 @@ public sealed class RenderContext
         return command with { Execute = wrappedExecute, ExecuteAsync = null, IsExecuting = isExecuting };
     }
 
+#if !UWP_BUILD
     // ════════════════════════════════════════════════════════════════
-    //  Responsive layout hooks
+    //  Responsive layout hooks (multi-window, tray icons)
+    //  UWP不支持多窗口和托盘图标功能，这些钩子在UWP中不可用
     // ════════════════════════════════════════════════════════════════
 
     /// <summary>
@@ -1509,6 +1511,7 @@ public sealed class RenderContext
         var (width, _) = UseWindowSize();
         return width >= minWidth;
     }
+#endif
 
     internal void FlushEffects()
     {
@@ -1847,7 +1850,7 @@ public sealed class RenderContext
             case PersistedScope.Window:
                 var win = Microsoft.UI.Reactor.ReactorApp.ActiveHostInternal?.OwningWindow;
                 if (win is not null)
-                    return win.PersistedScope;
+                    return win.PersistedScope as IPersistedStateScope;
                 // Fall back to the process-wide scope so unit tests that
                 // exercise UsePersisted without a Window keep working. The
                 // legacy two-arg overload defaults to PersistedScope.Application

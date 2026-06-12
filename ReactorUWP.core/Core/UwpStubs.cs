@@ -13,6 +13,18 @@ using Windows.UI.Core;
 using CoreDispatcher = Windows.UI.Core.CoreDispatcher;
 
 // ════════════════════════════════════════════════════════════════════════
+//  内部辅助类 - ReferenceEqualityComparer
+// ════════════════════════════════════════════════════════════════════════
+
+internal class ReferenceEqualityComparer : IEqualityComparer<object>
+{
+    public static readonly ReferenceEqualityComparer Instance = new();
+    
+    public new bool Equals(object? x, object? y) => ReferenceEquals(x, y);
+    public int GetHashCode(object obj) => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
+}
+
+// ════════════════════════════════════════════════════════════════════════
 //  Microsoft.UI.Reactor 命名空间存根 (Hosting 相关类型)
 // ════════════════════════════════════════════════════════════════════════
 
@@ -36,6 +48,9 @@ namespace Microsoft.UI.Reactor
         public void RegisterAspectRatioOverride(double? aspectRatio) { }
         public void BeginDragMove() { }
         public Action RegisterClosingGuard(Func<bool> guard) => () => { };
+        
+        // PersistedScope存根 - 用于hot reload时保留组件状态
+        public object? PersistedScope { get; set; }
     }
 
     public class WindowState
@@ -128,10 +143,18 @@ namespace Microsoft.UI.Reactor.Hosting
     
     public class ReactorHotReloadCopier
     {
-        public static T CreateInstance<T>() where T : new() => new T();
-        public static T CreateInstance<T>(Func<T> factory) => factory();
+        public static T? CreateInstance<T>() where T : new() => new T();
+        public static T? CreateInstance<T>(Func<T?> factory) => factory();
+        public static object? CreateInstance(Type type)
+        {
+            try { return Activator.CreateInstance(type); }
+            catch { return null; }
+        }
+        
         public static bool TryMigrate<T>(T oldInstance, T newInstance, Func<T, T, bool> copier) => false;
         public static bool TryMigrate<T>(T oldInstance, T newInstance) => false;
+        public static bool TryMigrate<T>(T oldInstance, T newInstance, HashSet<object> visited) where T : class => false;
+        public static bool TryMigrate(object oldInstance, object newInstance, HashSet<object> visited) => false;
     }
 }
 

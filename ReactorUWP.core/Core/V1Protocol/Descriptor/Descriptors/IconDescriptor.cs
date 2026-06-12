@@ -67,9 +67,11 @@ internal static class IconDescriptor
                         is Geometry geo)
                         pathIcon.Data = geo;
                     break;
+#if !UWP_BUILD
                 case ImageIconData ii when icon is WinUI.ImageIcon imageIcon:
                     imageIcon.Source = new BitmapImage(ii.Source);
                     break;
+#endif
             }
 
             Reconciler.SetElementTag(icon, newEl);

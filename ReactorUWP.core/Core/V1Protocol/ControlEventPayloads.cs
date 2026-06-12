@@ -436,11 +436,11 @@ internal sealed class TitleBarEventPayload
 internal sealed class NavigationViewEventPayload
 {
     public global::Windows.Foundation.TypedEventHandler<
-        Windows.UI.Xaml.Controls.NavigationView,
-        Windows.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs>? SelectionChangedTrampoline;
+        Microsoft.UI.Xaml.Controls.NavigationView,
+        Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs>? SelectionChangedTrampoline;
     public global::Windows.Foundation.TypedEventHandler<
-        Windows.UI.Xaml.Controls.NavigationView,
-        Windows.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs>? BackRequestedTrampoline;
+        Microsoft.UI.Xaml.Controls.NavigationView,
+        Microsoft.UI.Xaml.Controls.NavigationViewBackRequestedEventArgs>? BackRequestedTrampoline;
 }
 
 /// <summary>

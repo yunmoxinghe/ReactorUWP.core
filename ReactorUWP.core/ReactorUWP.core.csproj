@@ -4,8 +4,64 @@
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <Nullable>enable</Nullable>
     <UseUwp>true</UseUwp>
+    <Platforms>x86;x64;arm64</Platforms>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <DefaultLanguage>zh-CN</DefaultLanguage>
-    <IsAotCompatible>true</IsAotCompatible>
+    <IsAotCompatible>false</IsAotCompatible>
     <DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- 定义 UWP 条件编译符号 -->
+    <DefineConstants>$(DefineConstants);UWP_BUILD</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- WinUI 2 for UWP -->
+    <PackageReference Include="Microsoft.UI.Xaml" Version="2.8.7" />
+    
+    <!-- Dependencies from official Reactor -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="9.0.4" />
+    <PackageReference Include="MessageFormat" Version="8.0.0" />
+    
+    <!-- WebView2 for UWP -->
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2849.39" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 排除 UWP 不支持或依赖缺失的功能 -->
+    
+    <!-- 排除 Hosting（Window管理，WinUI 3 专属）-->
+    <Compile Remove="Hosting\**" />
+    
+    <!-- 排除 Docking（依赖 Hosting）-->
+    <Compile Remove="Docking\**" />
+    
+    <!-- 排除 Charting（依赖 Hosting）-->
+    <Compile Remove="Charting\**" />
+    
+    <!-- 排除依赖 Devtools/Hosting 的文件 -->
+    <Compile Remove="Elements\DevtoolsMenuShim.cs" />
+    <Compile Remove="Elements\BackdropExtensions.cs" />
+    
+    <!-- 排除依赖 OverlayLifecycle 的 handler -->
+    <Compile Remove="Core\V1Protocol\Handlers\OverlayDecoratorHandlers.cs" />
+    
+    <!-- 排除 SystemBackdrop 相关（WinUI 3 专属）-->
+    <Compile Remove="Core\BackdropKind.cs" />
+    
+    <!-- 排除依赖 Hosting 的 Descriptor/Lifecycle -->
+    <Compile Remove="Core\V1Protocol\Descriptor\Descriptors\XamlHostDescriptor.cs" />
+    <Compile Remove="Core\V1Protocol\Descriptor\Descriptors\XamlPageDescriptor.cs" />
+    <Compile Remove="Core\V1Protocol\OverlayLifecycle.cs" />
+    
+    <!-- 排除 WinUI 3 专属控件的 Descriptor （UWP 中不存在这些控件）-->
+    <Compile Remove="Core\V1Protocol\Descriptor\Descriptors\TitleBarDescriptor.cs" />
+    <Compile Remove="Core\V1Protocol\Descriptor\Descriptors\ScrollViewDescriptor.cs" />
+    <Compile Remove="Core\V1Protocol\Descriptor\Descriptors\ItemsViewDescriptor.cs" />
+    <Compile Remove="Core\V1Protocol\Descriptor\Descriptors\ItemContainerDescriptor.cs" />
+    <Compile Remove="Core\V1Protocol\Descriptor\Descriptors\SelectorBarDescriptor.cs" />
+    <Compile Remove="Core\V1Protocol\Descriptor\Descriptors\AnnotatedScrollBarDescriptor.cs" />
+    <Compile Remove="Core\V1Protocol\Descriptor\Descriptors\MapControlDescriptor.cs" />
+  </ItemGroup>
 </Project>

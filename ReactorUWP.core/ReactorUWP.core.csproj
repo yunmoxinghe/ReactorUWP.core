@@ -8,7 +8,8 @@
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <DefaultLanguage>zh-CN</DefaultLanguage>
     <IsAotCompatible>false</IsAotCompatible>
-    <DisableRuntimeMarshalling>true</DisableRuntimeMarshalling>
+    <!-- 暂时禁用以修复 WinRT 互操作的 InvalidCastException -->
+    <!-- <DisableRuntimeMarshalling>true</DisableRuntimeMarshalling> -->
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <!-- 定义 UWP 条件编译符号 -->
     <DefineConstants>$(DefineConstants);UWP_BUILD</DefineConstants>
